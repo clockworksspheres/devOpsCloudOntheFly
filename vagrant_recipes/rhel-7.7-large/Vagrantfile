@@ -1,0 +1,92 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# README!
+#
+# Author: Andrew Hitchcock
+# Date: 3:06pm 6/4/19
+#
+# This file is designed to be a plain vagrant build file to open pre-packaged boxes. It is important that the VM_PATH
+# variable points to the the box being opened.
+#
+### -------------------------------------------------- Variables --------------------------------------------------- ###
+
+VB_PATH = "http://rntest.lanl.gov/boxes/rhel-server-7.7-large.box"
+VB_NAME = "rhel-7.7.large"
+SSH_UNAME = "vagrant"
+SSH_PSSWD = "vagrant"
+MEM = "512"
+CPUS = "1"
+
+### ---------------------------------------------------Config------------------------------------------------------- ###
+
+Vagrant.configure("2") do |config|
+   if Vagrant.has_plugin?("vagrant-proxyconf")
+       config.proxy.http     = "http://proxyout.lanl.gov:8080/"
+       config.proxy.https    = "https://proxyout.lanl.gov:8080/"
+       config.proxy.no_proxy = "localhost,127.0.0.1,lanl.gov"
+   end
+  config.vm.box = VB_PATH
+  config.vm.provider "virtualbox" do |vb|
+     vb.name = VB_NAME
+     vb.gui = true
+     vb.memory = MEM
+     vb.cpus = CPUS
+  end
+
+	config.vm.synced_folder ".", "/vagrant", disabled: true
+
+
+  config.ssh.username = SSH_UNAME
+  config.ssh.password = SSH_PSSWD
+
+### -------------------------------------------------- Provisioning ------------------------------------------------ ###
+  config.vm.provision "shell", inline: <<-SHELL
+    echo " \n vagrant is provisioning" >> /debug.txt   # <-- This will let us know if the provisioning is running --
+       #wget --no-proxy http://rntest.lanl.gov/hidden_downloads/isos/rhel-server-7.7-beta-1-x86_64-dvd.iso
+       
+# --- install the dvd repo locally
+#mount -o loop rhel-server-7.7-beta-1-x86_64-dvd.iso /mnt
+#cp /mnt/media.repo /etc/yum.repos.d/rhel7.7.iso.repo
+#chmod 644 /etc/yum.repos.d/rhel7.7.iso.repo
+
+# --- configure the repo file correctly
+#sh -c "echo '[InstallMedia]
+#name=DVD for Red Hat Enterprise Linux 7.7 Server
+#mediaid=1559251455.164673
+#metadata_expire=-1
+#gpgcheck=1
+#cost=500
+#enabled=1
+#baseurl=file:///mnt/
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release' > /etc/yum.repos.d/rhel7.7.iso.repo"
+
+# --- reset yum stuff
+#yum clean all && subscription-manager clean
+
+# --- testing the script
+#yum update
+#yum install -y vim
+
+# --- install epel repo
+#cd /tmp
+#wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+#yum install -y epel-release-latest-7.noarch.rpm
+
+# --- test epel
+#yum install -y cowsay
+
+# --- install software --------------------------------------------------------------------------------------
+#yum install tcpdump -y # <-- view tcp traffic
+#yum install arpwatch -y # <-- monitor arp activity
+#chkconfig --level 35 aprwatch on
+
+# --- system monitoring
+#yum install lsof -y # <-- list open files
+#yum install sysstat -y # <-- input/output statistics
+
+# --- install desktop
+#yum groupinstall -y "server with gui"
+
+SHELL
+end

@@ -1,0 +1,142 @@
+<DOCTYPE html>
+
+<html>
+<head>
+<style>
+div{
+
+        border: 5px solid black;
+        margen-right: 15000px;
+ 
+}
+</style>
+</head>
+
+<html>
+
+<body bgcolor="777777">
+
+<h1><b><u>Packer</u></b></h1>
+
+<div>
+<p> &emsp;Packer – Packer is an open source tool for creating identical machine images for multiple platforms from a single source configuration (taken from packers website). Packer works by using a .json file containing directions to build and package machine images. Packer can be utilized to create machine images for a pxe server, Docker files, vagrant boxes, and more. 
+<br>	
+&emsp; When Packer is running it will: 
+<br>&emsp; - create a new virtual machine 
+<br>&emsp; - provision the machine with a kickstart/preseed file
+<br>&emsp; - run scripts against the machine
+<br>&emsp; - bake the machine into a completed image/box/dockerfile 
+</p>
+</div>
+
+<h2>&emsp; Installing packer  </h2>
+<p> 
+ &emsp;1.) Go to <a href=https://www.packer.io/downloads.html> packers website </a> and select the version appropriate for your operating system
+<br>&emsp;2.) A pop up will appear. Click “save file” and wait for the package to download.
+<br>&emsp;3.) Continue through the installer until the installation has completed. </p>
+<br>
+
+<div>
+<h2>&emsp; Configuring Packer </h2>
+<p>
+&emsp;Packer works by reading a .json file (writen in ruby) in order to build machine images. There are many resources available online on how to write a .json file.
+This doccumentation will give a general example on how to write a .json file 
+<br>
+&emsp;Click <a href=https://github.com/boxcutter> here </a> to see examples .json files for multiple operating systems
+</p>
+<p> 
+&emsp;The .json file has 4 main sections:
+<br>&emsp; - Builders 
+<br>&emsp; - Post-Processors 
+<br>&emsp; - Provisioners 
+<br>&emsp; - Variables (optional)
+
+<h4>&emsp;Builders:</h4>
+<p>
+&emsp;This section includes things that packer will use to create a new virtual machine such as:
+<br>&emsp; - Virtual machine type (VirtualBox/VM Ware/etc…)
+<br>&emsp; - Boot commands
+<br>&emsp; - Options for unattended installation files
+<br>&emsp; - Username/password for account creation
+<br>&emsp; - VM Name
+<br>&emsp; - VM resources such as CPUs, Memory, Disk size, etc…
+<br>
+<br>
+&emsp;see example below:
+</P>
+&emsp;<img src=pictures/Configure_packer/builders-packer.png style="width:700;">
+
+<h4>&emsp; Post Processors:</h4>
+<p>
+ &emsp;This section includes options to save the image once the build is completed, such as: 
+<br>&emsp; - Output name
+<br>&emsp; - Outout type
+<br>
+<br>
+&emsp;see example below
+</P>
+&emsp;<img src=pictures/Configure_packer/post-packer.png style="width:700;">
+
+<h4>&emsp; Provisioners:</h4>
+<p>
+&emsp;This section allows the user to make changes to the virtual machine 
+(like installing packages and writing file configurations).
+<br>&emsp;It does this by including options for provisioning, such as:  
+<br>&emsp; - Environmental variables 
+<br>&emsp; - Shell commands
+<br>&emsp; - cutsom srcripts
+<br>
+<br>
+&emsp;see example below
+</P>
+&emsp;<img src=pictures/Configure_packer/prov-packer.png style="width:700;">
+
+<h4>&emsp;Variables (optional)</h4>
+<p>
+&emsp;Although technically a part of the provisioners section; a variable section is a good idea because it will allow for easy customization. 
+</P>
+&emsp;<img src=pictures/Configure_packer/var-packer.png style="width:700;">
+<br>
+<br>
+</div>
+	
+<br>
+<h2>&emsp; Using Packer </h2>
+<p>&emsp; To run packer, open a shell and enter the command:
+<br>
+<pre>	packer build (path_to_.json_file)</pre>
+</p>
+
+<p>
+&emsp;packer will then: 
+<br>&emsp; - Spin up a new vm
+<br>&emsp; - Enter given boot commands
+<br>&emsp; - Go through the unattended installation
+<br>&emsp; - SSH into the virtual machine
+<br>&emsp; - Provision the virtul machine
+<br>&emsp; - Gracefully haly and package the virtual machine
+</p>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+	
+<div class="footer">
+<p> 
+&emsp;for more info check out packers website <a href=https://www.packer.io/intro/> here </a>
+<br>
+&emsp;or go 
+<a href=index.html> home </a>
+</div>
+
+</body>
+</html>
+~
+~
+~
+~
+~
+
+

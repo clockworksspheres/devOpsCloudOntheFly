@@ -1,0 +1,13 @@
+=-=-=-=-=-=-=-=-=-=-=-=-=-= K N O W n -=- B U G S =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Debian minimal packer not provisioning --------------------------------------------------------------------------
+
+The debian-9.9.0-minimal.json file does not save anything that packer provisions. This means that debian 
+does not contain all of the repos that is needs and it cannot install software. 
+
+as a workaround, the vagrant file installs the correct repos. But this means that vagrant will fail the
+first time it runs. To get this to work, after running "vagrant up"
+
+   --> vagrant provision <--
+
+ 

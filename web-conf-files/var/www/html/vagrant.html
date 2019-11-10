@@ -1,0 +1,130 @@
+<DOCTYPE html>
+<html>
+<head>
+<style>
+div{
+
+        border: 5px solid black;
+        margen-right: 15000px;
+
+}
+</style>
+</head>
+
+<body bgcolor="777777">
+<h1><b><u>Vagrant</u></b></h1>
+
+<div>
+<p> 
+&emsp; Vagrant is a tool for building and managing virtual machine environments in a single workflow (taken from Vagrants website).
+
+<br> &emsp;  With vagrant one can download pre-packaged boxes and run virtual machines in seconds, as well as run custom boxes. Vagrant works by reading a “Vagrantfile” which contains directions to retrieve, successfully open, provision, and manage virtual machines 
+</p>
+<br>
+&emsp; Vagrant requires a file called a “Vagrantfile” in order to run. These files are very simple and only requiring a few things. 
+<br>
+&emsp;To generate an empty Vagrantfile:
+<br>&emsp; - Open a shell
+<br>&emsp; - Navigate to the folder you wish to work out of  
+<br>&emsp; - enter the command:
+<pre> 
+&emsp;&emsp; vagrant init 
+</pre>
+<br> 
+&emsp;(note: if you know the path/url to a specific box, you can provide it and vagrant will generate a vagrant file for that box)
+<br>
+<br>
+</div>
+
+<h2> Installing vagrant  </h2>
+<p>
+1.) Go to <a href=https://www.vagrantup.com/downloads.html>Vagrants website</a> and select the version appropriate for your operating system
+<br> 2.) A pop up will appear. Click “save file” and wait for the package to download.
+<br> 3.) Continue through the installer until the installation has completed. </p>
+<br>
+
+<div>
+<h2>&emsp; Configuring Vagrant </h2>
+
+<p>
+<br>
+<br>
+&emsp; A Vagrantfile has 3 main sections: variables (optional), configurations, and provisioning (optional)
+</p>
+<br>
+
+<h4>&emsp; Variables (optional)</h4>
+<p>
+&emsp; A variable section is good practice because it allows for easy value changes for the Vagrantfile
+<br>
+<br>
+&emsp; see below:
+</P>
+&emsp;<img src=pictures/configure_vagrant/var-vagrant.png style="width:700;">
+
+<h4>&emsp; Configurations </h4>
+<p>
+&emsp; This is the only necessary section of a Vagrantfile. In this section options can be provided to supply environmental variables, virtual machine resources, and ssh login information 
+<br>
+<br>
+&emsp; see below:
+</P>
+&emsp;<img src=pictures/configure_vagrant/config-vagrant.png style="width:700;">
+	
+<h4>&emsp;Provisioning (optional)</h4>
+<p>
+&emsp; This section includes options for provisioning the virtual machine with options with shell commands
+</P>
+<br>
+&emsp; see below:
+<br>
+<br>
+&emsp;<img src=pictures/configure_vagrant/prov-vagrant.png style="width:700;">
+<br>
+<br>
+</div>
+
+<h2>&emsp; Using Vagrant </h2>
+<p>
+&emsp; To run vagrant, open a shell in the folder containing your Vagrantfile and enter the command: 
+<br>
+<pre>	vagrant up </pre>
+</p>
+
+<p>
+&emsp; Vagrant will then: 
+<br>&emsp; - Open the box
+<br>&emsp; - name the vm 
+<br>&emsp; - provision the vm with hardware specifications and environmental variables
+<br>&emsp; - SSH into the virtual machine
+<br>&emsp; - Provision the virtul machine with inline commands 
+</p>
+
+&emsp; There are many useful vagrant commands that can be ran after the vagrant box has been created. Some examples are: 
+<br>&emsp; - Vagrant halt -- shutdown of the VM
+<br>&emsp; - Vagrant provision -- forces the provisioning inside the Vagrantfile to run again (useful if it failed the first time) 
+<br>&emsp; - Vagrant ssh -- ssh into the VM
+<br>&emsp; - Vagrant destory -- completely removes the VM and all of its resources 
+<br>&emsp; - Vagrant -h -- display a complete list of commands
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="footer">
+<p> for more info check out vagrants website <a href=https://app.vagrantup.com/> here </a>
+<br>
+<a href=index.html> home </a>
+</div>
+
+</body>
+</html>
+~
+~
+~
+~
+~
+
+

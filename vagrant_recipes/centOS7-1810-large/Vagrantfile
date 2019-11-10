@@ -1,0 +1,49 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# README!
+#
+# Author: Andrew Hitchcock
+# Date: 3:06pm 6/4/19
+#
+# This file is designed to be a plain vagrant build file to open pre-packaged boxes. It is important that the VM_PATH
+# variable points to the box being opened.
+#
+
+### -------------------------------------------------- Variables --------------------------------------------------- ###
+
+VB_PATH = "http://rntest.lanl.gov/boxes/centOS7-large-.box"
+VB_NAME = "centos_large"
+SSH_UNAME = "vagrant"
+SSH_PSSWD = "vagrant"
+MEM = "1024"
+CPUS = "1"
+
+### -------------------------------------------------- Config ------------------------------------------------------ ###
+
+Vagrant.configure("2") do |config|
+   if Vagrant.has_plugin?("vagrant-proxyconf")
+       config.proxy.http     = "http://proxyout.lanl.gov:8080/"
+       config.proxy.https    = "https://proxyout.lanl.gov:8080/"
+       config.proxy.no_proxy = "localhost,127.0.0.1,.lanl.gov"
+   end
+  config.vm.box = VB_PATH
+  config.vm.provider "virtualbox" do |vb|
+     vb.name = VB_NAME
+     vb.gui = true
+     vb.memory = MEM
+     vb.cpus = CPUS
+  end
+
+	config.vm.synced_folder ".", "/vagrant", disabled: true
+
+
+  config.ssh.username = SSH_UNAME
+  config.ssh.password = SSH_PSSWD
+
+### -------------------------------------------------- Provisioning ------------------------------------------------ ###
+  config.vm.provision "shell", inline: <<-SHELL
+    echo " \n vagrant is provisioning" >> /debug.txt   # <-- This will let us know if the provisioning is running --
+
+  SHELL
+end

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div{ 
+
+	border: 5px solid black;
+	margen-right: 15000px; 
+}
+</style>
+</head>
+	<body bgcolor="777777">
+ 		<h1> Welcome to DevOps Cloud on the fly </h1>
+
+		<div>	
+		<h2> About the project </h2>	
+
+			
+		<p>
+		DevOps cloud on the fly provides automated virtual machine creation on demand.
+		This is accomplished using two very powerful software tools: Packer and Vagrant. 
+		</p>
+
+		<p>
+		<b>Packer</b> by Hashicorp is a software which specializes in the creation, provisioning, and packaging of virtual environments from scratch.  It does this by reading a .json file in which the developer can give specific options for the virtual environment.  In this .json file there are options for building the VM, providing unattended install files, and provisioning with command line arguments and shell scripts. Additionally packer can package up the virtual machine into a number of forms after the process is completed including .iso files, virtual box images, vagrant boxes, and Docker files.
+		</p>
+
+		<p>
+		<b>Vagrant</b>, also by Hashicorp, is a software which can open, provision, and re-package virtual machines from pre-made boxes. These “vagrant boxes” can be compressed for easy portability and can run identically across multiple platforms. Vagrant works by reading a “Vagrantfile” in which the user can specify various build options including provisioning system specifications, environmental variables, configuring shared storage, running custom scripts, and executing command line arguments.
+		<p>
+
+		<br>
+		<p>
+		These two tools can be used in tandem to create any number of virtual machines on demand, and then destroy them completely when testing is finished. 
+		</p>
+		</div>		
+
+			
+		<br>
+		<br>
+		<p>
+		 Click <a href=downloads.html><font size="+2"> here </font></a> to view the vagrant boxes available to download </p>
+			
+		<br>
+		<br>
+		<h2> Doccumentation </h2>
+		<a href=packer.html><font size="+2"> Packer </a></font>
+		<br>
+		<a href=vagrant.html><font size="+2"> Vagrant </a></font>
+		<br>
+		<br>
+
+		<p>
+		Click the pictures to learn more!
+		</p>
+		<a href=https://www.vagrantup.com/>
+		<img src="pictures/vagrant-logo-png-transparent.png" alt="vagrant logo" style="float:left;width:400px;heighth:500px;">
+		</a>
+		<a href=http://www.packer.io>
+		<img src="pictures/packer_primarylogo_fullcolor.png" alt="packer logo" style="float:right;width:1000px;heighth:1100px;">
+		</a>
+	</body>
+</html>
