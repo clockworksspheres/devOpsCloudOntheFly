@@ -1,0 +1,306 @@
+nfrastructure as Code – 
+A guide to the automated creation and hosting of virtual machine images.
+
+Introduction
+-	Description of project 
+-	Link to git-repo
+Step 1 – Research tools involved
+-	VirtualBox 
+-	Packer
+-	Vagrant 
+-	Apache
+Step 2 – install tools 
+-	Vagrant 
+-	Packer 
+-	VirtualBox
+-	Apache
+Step 3 – Create images
+-	Write and configure packer .json file to build vagrant boxes 
+-	Write Vagrantfiles to open boxes 
+Step 4 – Configure a web server to make Vagrant boxes available
+-	Write html index page 
+-	Write basic user documentation 
+-	Write html downloads page that references
+o	Box files 
+o	Vagrant builds (for each box with the URL included) 
+o	Iso files for each OS
+ 
+Introduction
+Description – “Infrastructure as code” purposes to automate virtual machine creation and provide high availability for custom boxes to be downloaded. This is done with several tools: packer, vagrant, VirtualBox, and Apache. 
+
+Link to git-repo - https://git.lanl.gov/ahitchcock/infrastructure-as-code <-- here code can be found to configure the service 
+
+This guide will assist in the installation, configuration, and maintenance of a Vagrant box hosting website. Parts of this guide are written for Windows and Linux. 
+
+ 
+Step 1 – Research
+Before beginning it is necessary to become familiar with the tools involved. 
+
+VirtualBox: 
+VirtualBox is a free open-source type 2 hypervisor supporting Windows, Linux, and Mac. This means that is it a program that runs within an operating system (as opposed to running on bare metal) and that it can build virtual environments. The tools we are using are capable of utilizing other hypervisors, but since VirtualBox is free and commonly documented it is the hypervisor that will be used in this documentation.  
+The VirtualBox website  https://www.virtualbox.org/
+VirtualBox tutorial  https://www.virtualbox.org/manual/ch01.html
+
+Packer:
+Packer – Packer is an open source tool for creating identical machine images for multiple platforms from a single source configuration (taken from packers website). Packer works by using a .json file containing directions to build and package machine images. Packer can be utilized to create machine images for a pxe server, Docker files, vagrant boxes, and more.
+When Packer is running it will: 
+•	create a new virtual machine
+•	provision the machine with a kickstart/preseed file
+•	run scripts against the machine
+•	bake the machine into a completed image/box/dockerfile
+Packer’s website  https://www.packer.io/
+Packer Tutorial  https://www.packer.io/intro/getting-started/build-image.html
+Packer tutorial video  https://www.youtube.com/watch?v=LGwlXBC9TjY 
+Example packer builds  https://github.com/boxcutter 
+
+Vagrant:
+Vagrant is a tool for building and managing virtual machine environments in a single workflow (taken from Vagrants website).With vagrant one can download pre-packaged boxes and run virtual machines in seconds, as well as run custom boxes. Vagrant works by reading a “Vagrantfile” which contains directions to retrieve, successfully open, provision, and manage virtual machines.
+Vagrant’s website  https://www.vagrantup.com/ 
+Vagrant tutorial  https://www.vagrantup.com/intro/getting-started/
+Vagrant Provisioning help  https://www.vagrantup.com/docs/provisioning/basic_usage.html 
+Vagrant tutorial video  https://www.youtube.com/watch?v=PmOMc4zfCSw
+
+Apache: 
+Apache is the most widely used web server software. Developed and maintained by Apache Software Foundation, Apache is an open source software available for free. It runs on 67% of all webservers in the world. It is fast, reliable, and secure. It can be highly customized to meet the needs of many different environments by using extensions and modules. Most WordPress hosting providers use Apache as their web server software. However, WordPress can run on other web server software as well. (taken from “what is apache”  https://www.wpbeginner.com/glossary/apache/) 
+The apache website  https://www.apache.org/
+Apache tutorial  https://www.guru99.com/apache.html
+Installing and configuring apache  https://tutorials.ubuntu.com/tutorial/install-and-configure-apache#0 
+HTML tutorial  https://www.w3schools.com/html/ 
+ 
+Step 2 – Installation 
+Before beginning it is important to make sure that all the tools involved are installed and configured properly.
+
+NOTE: in order to run any of these tools virtualization needs to be enabled on your computer. Sometimes this involves going into the bios and turning on virtualization, sometimes this involves changing windows settings. Below are some links that may be helpful.
+	For HP hardware: https://support.hp.com/us-en/document/c04760917 
+For Dell hardware: https://www.howtogeek.com/213795/how-to-enable-intel-vt-x-in-your-computers-bios-or-uefi-firmware/
+Enabling virtualization in windows: https://blogs.technet.microsoft.com/canitpro/2015/09/08/step-by-step-enabling-hyper-v-for-use-on-windows-10/
+
+VirtualBox: 
+On Windows: 
+•	VirtualBox can be downloaded at: https://www.virtualbox.org/wiki/Downloads
+•	After downloading the package go through the installation.
+•	A video tutorial on installing VirtualBox on windows can be found here: https://www.youtube.com/watch?v=63_kPIQUPp8 
+On Linux: 
+•	VirtualBox can be downloaded at: https://www.virtualbox.org/wiki/Linux_Downloads 
+•	A tutorial on installing VirtualBox on Linux: https://itsfoss.com/install-virtualbox-ubuntu/
+•	A video tutorial on installing VirtualBox on Debian based Linux: https://www.youtube.com/watch?v=nD4vCxtWRdk 
+
+Packer:
+On Windows: 
+•	Packer can be downloaded at: https://www.packer.io/downloads.html. 
+•	Follow the link and select the version appropriate for your operating system.
+•	A pop-up will appear. Click “save file” and wait for the package to download.
+•	Continue through the installer until complete. 
+On Linux: 
+•	A guide for installing on Linux can be found at: https://www.packer.io/intro/getting-started/install.html. 
+•	A video guide for installing packer on Linux: https://www.youtube.com/watch?v=QqAv2vpFeSA. 
+
+Vagrant:
+On Windows:
+•	Vagrant can be downloaded at: https://www.vagrantup.com/downloads.html. 
+•	Follow the link and select the version appropriate for your operating system.
+•	A pop up will appear. Click “save file” and wait for the package to download.
+•	Continue through the installer until the installation has completed. 
+On Linux: 
+•	A guide for installing vagrant on Linux can be found at: https://www.thegeekstuff.com/2016/02/setup-vagrant-on-linux/. 
+•	A video guide for installing vagrant on Linux can be found at: https://www.youtube.com/watch?v=VI5m1UyNBiE
+
+Apache:
+On Windows: 
+•	Apache is a Linux based web-server software. HOWEVER, there is a version that claims to support windows. Learn about it here: https://httpd.apache.org/docs/2.4/platform/windows.html 
+On Linux: 
+•	To install apache, run the command: 
+o	“sudo yum install httpd”
+ 
+Step 3 – Create images 
+This step will cover using packer to create vagrant boxes, and then writing using Vagrant to open those boxes. Keep in mind that packer can export machine images in many other forms besides Vagrant Boxes, but this tutorial is only covering Vagrant.
+
+The following documentation is designed to be ran on Linux. In order to run on Windows, file paths may need to be changed from forward slashes to back slashes. 
+
+Building with Packer
+As mentioned above, Packer works by reading a file called a .json file (which is written ruby). This file contains detailed instructions on how to build, provision, and export machine images. 
+The packer .json file has 4 main sections:
+•	Builders
+•	Post-Processors
+•	Provisioners
+•	Variables (optional)
+
+Builders:
+This section includes things that packer will use to create a new virtual machine such as:
+•	Virtual machine type (VirtualBox/VM Ware/etc…)
+•	Boot commands
+•	Options for unattended installation files
+•	Username/password for account creation
+•	VM Name
+•	VM resources such as CPUs, Memory, Disk size, etc…
+See an example below: 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Post Processors:
+This section includes options save the image once the build is completed, such as: 
+•	Output name 
+•	Output type 
+See an example below: 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Provisioners: 
+This section allows users to make changes to the virtual machine (like installing packages and writing file configurations), it does this by including provisioning options such as: 
+•	Environmental variables 
+•	Shell commands 
+•	Custom scripts 
+See example below: 
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Variables (optional)
+Although technically a part of the Provisioners section; a variable section is a good idea because it will allow for easy customization.
+See example below:
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Using Packer
+After writing the .json file it is a good idea to validate the file to check for errors. To do this enter the command: 
+	“Packer validate file.json”
+For documentation on the packer validate command: https://www.packer.io/docs/commands/validate.html
+
+Once the .json file is validated packer is ready to build the vagrant box. To start the build enter the command: 
+	“packer build file.json” 
+Packer will then:
+•	Spin up a new vm
+•	Enter given boot commands
+•	Go through the unattended installation
+•	SSH into the virtual machine
+•	Provision the virtual machine
+•	Gracefully halt and package the virtual machine
+
+Troubleshooting
+There are several common problems that can arise when building your own packer .json files. Here are some issues that I ran into while working with packer: 
+
+NOTE: Packer is very particular about to the syntax of the .json file.
+•	White space is bad. 
+•	A “ ` ” (tic mark) is not a “ ‘ ” (single quote). 
+
+Unattended installation failed 
+•	this can be due to many different problems
+•	Be sure that the operating system being installed supports unattended installations (live images usually do not) 
+Packer cannot create a virtual hard drive
+•	This is usually a VirtualBox problem. If packer fails mid-build sometimes the remnants of the machine it was building can hang around and cause problems. 
+•	SOLUTION – manually remove the files from VirtualBox. 
+o	Open VirtualBox 
+o	Click file  virtual media manager  hard disks
+o	Right click on the problem drive and click “release”
+Cannot install software during installation 
+•	This issue can be caused if you are behind a closed network 
+•	SOLUTION – provide a proxy server OR a repository that is also behind the closed network 
+Cannot load kickstart/preseed
+•	This can be caused by syntax errors in the .json file.
+
+For more troubleshooting tips; https://www.packer.io/docs/other/debugging.html
+
+Special notes on Packer
+Some of the operating systems involved in this summer project require special procedures. 
+RHEL 7 - Since this version of RHEL 7 is not registered with the satellite server, it requires the repo from the dvd to be mounted locally in order to install anything. 
+RHEL 6 large – requires the gui to be installed with the kickstart file. 
+
+Opening Boxes with Vagrant
+Vagrant works by reading a “Vagrantfile” to open and provision a “vagrant box”. The Vagrantfile contains instructions to retrieve, open and provision virtual machines from pre-packaged boxes. 
+To generate a simple vagrant file, issue the command: 
+	“Vagrant init” 
+
+This simple file can be used to create custom vagrant recipes by modifying the different sections of the file. 
+ The Vagrant files in this project only have 3 sections: 
+•	Variables (optional)
+•	Provisioning (optional)
+•	Configurations
+
+Variables: 
+A Variable section is good practice because it provides easy customization. It is a good idea to set variables for things like path, vm name, virtual hardware specifications, etc… 
+See below: 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Configurations: 
+This is the only truly necessary section of a Vagrantfile. In this section options can be provided to supply environmental variables, virtual machine resources, and ssh login information. 
+See below: 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Provisioning:
+This section provides the ability to supply vagrant with shell commands to automate things. 
+See below: 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+NOTE: Vagrant can do a lot of things beyond the scope of this project. Vagrant can run custom scripts against the vm when connected to shared storage. However, if this is not set up correctly it will result in an error halting the provisioning. To work around this, include the following in the configuration section: 
+“config.vm.synced_folder ".", "/vagrant", disabled: true”
+
+Using Vagrant
+Once a vagrant file is created/downloaded, it can be ran using the following command: 
+	“vagrant up” 
+Vagrant will then: 
+•	Open the box 
+•	name the vm 
+•	provision the vm with hardware specifications and environmental variables 
+•	SSH into the virtual machine 
+•	Provision the virtual machine with inline commands 
+There are many useful vagrant commands that can be ran after the vagrant box has been created. Some examples are: 
+•	Vagrant halt -- shutdown of the VM 
+•	Vagrant provision -- forces the provisioning inside the Vagrantfile to run again (useful if it failed the first time) 
+•	Vagrant ssh -- ssh into the VM 
+•	Vagrant destroy -- completely removes the VM and all of its resources 
+•	Vagrant -h -- display a complete list of commands
+Troubleshooting
+There are several things that can go wrong when building Vagrantfiles or using vagrant in general. 
+A few of the issues I encountered are: 
+Vagrant boxes do not reflect provisioning performed by packer. 
+•	This happens because vagrant can cache a virtual machine and retain some settings (even after running “vagrant destroy”) 
+•	SOLUTION – to fix this problem delete the box from ~/.vagrant.d/boxes/ and remove any locks in the ~/.vagrant.d/data folder. 
+For a more extensive list of issues with vagrant  https://www.vagrantup.com/docs/other/debugging.html
+
+
+ 
+Step 4 – Hosting the box files with Apache
+This guide will provide instruction on how to build an online repository where the vagrant boxes can be hosted and easily downloaded. This is NOT an in depth apache or http guide, but it will provide enough instruction to get a web server up and running with a few pages and downloadable content. 
+
+Starting Apache
+After apache is installed, we will want to make sure that it can be started. To check the status of the apache service, enter the command: 
+	“sudo systemctl status httpd”
+
+See sample output:
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+To start the apache service: 
+	“sudo systemctl start httpd” 
+And then check the status again to make sure it is running
+See sample output: 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+When you are finished with apache, it can be stopped with: 
+	“sudo systemctl stop httpd” 
+Then check the status again to be sure it stopped 
+See example output: 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+Writing the web pages
+While apache is running it will look for html files to display in its document root. This is usually started with an index file. 
+For this project there only a few web pages running on apache. We have:
+•	an index (the home page)
+•	a downloads page 
+•	Documentation pages. 
+In order for apache to find the files they need to be places into the “document root” specified in the httpd.conf file. (Usually /var/www/html)
+
+Preparing the hosted files directory
+In order to provide download links to files on your system, they need to be in a directory with permissions that allow apache to serve it up. A simple way of doing this is to create a directory inside the web root where these files can live. 
+
+The index 
+This is a simple page with a short description about the project and links to the other pages. 
+Code for the index can be found in the git-repo
+
+The downloads page
+This page will contain the links to the boxes and any other files that we are going to host. In order to serve out the files effectively they need to be referenced by a link. 
+Code for the downloads page can be found in the git repo. 
+
+Documentation
+These pages will contain general information about how to use the tools involved. 
+
+Troubleshooting/see also 
+There are many things that can cause apache to malfunction.
+Here is an apache troubleshooting guide: https://www.linode.com/docs/troubleshooting/troubleshooting-common-apache-issues/
+Here is a simple html troubleshooting guide: https://en.support.wordpress.com/html-troubleshooting/ 
+

@@ -1,0 +1,156 @@
+<html>
+<head>
+<title>step-3-Create Imagesi with Packer</title> 
+<style>
+div{
+	border: 5px solid black;
+	margen-right:15000px;
+}
+</style>
+</head>
+<body bgcolor="d3d3d3">
+
+<h1>Step 3 - Create images with Packer</h1>
+<p>This step will cover using <b>Packer</b> to create vagrant boxes, and then using <b>Vagrant</b> to open those boxes.
+Keep in mind that packer can export machine images in many other forms besides Vagrant Boxes.</p>
+<p>The following documentation is designed to be ran on Linux. In order to run on Windows, file paths may need to be changed from forward slashes to back slashes </p>
+
+<br>
+<div>
+<h2>&emsp;Creating the .json file</h2>
+<p>&emsp;As mentioned above, Packer works by <b>reading a .json file</b> (which is written ruby).
+This file contains detailed instructions on how to build, provision, and export machine images.</p>
+<p>&emsp;The packer .json file has 4 main sections:</p>
+<pre>	- Builders
+	- Post-Processors
+	- Provisioners
+	- Variables (optional)
+</pre>
+
+<h3>&emsp;Builders:</h3>
+<p>&emsp;This section includes things that packer will use to create a new virtual machine such as: </p>
+<pre> 	- Virtual machine type (VirtualBox/VMWare/etc)
+	- Boot commands
+	- Unattended installation files
+	- Username/password for account creation
+	- VM Name
+	- VM resources such as CPUs, Memory, Disk size, etc
+</pre>
+<p>&emsp;See an example below: </p>
+&emsp;<img src=../pictures/Configure_packer/builders-packer.png style="width:700;">
+
+<br>
+<h3>&emsp;Post Processors:</h3>
+<p>&emsp;This section includes options save the image once the build is completed, such as:</p>
+<pre>	- Output name
+	- Output type
+</pre>
+<p>&emsp;See an example below: </p>
+ &emsp;<img src=../pictures/Configure_packer/post-packer.png style="width:700;">
+
+<h3>&emsp;Provisioners</h3>
+<p>&emsp; This section allows users to make changes to the virtual machine (like installing packages
+and writing file configurations), it does this by including provisioning
+options such as: </p>
+<pre>	- Environmental variables
+	- Shell commands
+	- Custom scripts 
+</pre>
+<p>&emsp;See example below:</p>
+&emsp;<img src=../pictures/Configure_packer/prov-packer.png style="width:700;">
+
+<h3>&emsp;Variables (optional)</h3>
+<p>&emsp;Although technically a part of the Provisioners section; a variable section is a good
+idea because it will allow for easy customization.</p>
+<p>&emsp;See example below:</p>
+&emsp;<img src=../pictures/Configure_packer/var-packer.png style="width:700;">
+<br>
+<br>
+</div>
+
+<h2>Building with Packer</h2>
+
+<p>After writing the .json file it is a good idea to validate the file to check for
+errors. To do this enter the command:</p>
+<pre>
+	Packer validate file.json
+</pre>
+<p>For documentation on the packer validate command click <a href="https://www.packer.io/docs/commands/validate.html">here</a></p>
+<p>Once the .json file is validated packer is ready to build the vagrant box.</p>
+<p>To start the build enter the command:</p>
+<pre>
+	packer build file.json
+</pre>
+<p>Packer will then:</p>
+<pre>	- Spin up a new vm
+	- Enter given boot commands
+	- Go through the unattended installation
+	- SSH into the virtual machine
+	- Provision the virtual machine
+	- Gracefully halt and package the virtual machine
+</pre>
+
+<div>
+<h2>&emsp;Troubleshooting</h2>
+
+<p>&emsp;There are several common problems that can arise when building your own packer .json files.</p>
+<p>&emsp;Here are some issues that I ran into while working with packer:</p>
+<br>
+<p><b>&emsp;NOTE:</b> Packer is very particular about to the syntax of the .json file.
+<p>&emsp;&emsp; - White space is bad.</p>
+<p>&emsp;&emsp;A `(tic mark) is not a ' (single quote).</p>
+
+<br>
+<p><b>&emsp;Unattended installation failed </b></p>
+<p>&emsp;&emsp;this can be due to many different problems</p>
+<p>&emsp;&emsp; Be sure the operating system being used supports unattended installations (live images usually do not)</p>
+
+<br>
+<p><b>&emsp;Packer cannot create a virtual hard drive</b></p>
+<p>&emsp;&emsp;This is usually a VirtualBox problem. If packer fails mid-build sometimes the remnants of the machine it was building can hang around and cause problems. </p>
+<p>&emsp;&emsp;SOLUTION - manually remove the files from VirtualBox.</p>
+<pre>	- Open VirtualBox --> Click file --> virtual media manager --> hard disks
+	- Right click on the problem drive and click release
+</pre>
+<br>
+<p><b>&emsp;Cannot install software during installation</b></p>
+<p>&emsp;&emsp;This issue can be caused if you are behind a closed network </p>
+<p>&emsp;&emsp;SOLUTION provide a proxy server OR a repository that is also behind the closed network </p>
+
+<br>
+<p><b>&emsp;Cannot load kickstart/preseed</b></p>
+<p>&emsp;&emsp;This can be caused by syntax errors in the .json file.</b></p>
+
+<br>
+<p><b>&emsp;For more troubleshooting tips</b> check out <a href="https://www.packer.io/docs/other/debugging.html">https://www.packer.io/docs/other/debugging.html</a></p>
+</div>
+
+<br>
+<h2>Additional notes </h2>
+<p>Some of the operating systems involved in this summer project require special configuring.</p>
+
+<p><b>- RHEL 7 - </b></p>
+<p>Since this build of RHEL 7 is not required to be registered with the satellite server, it may have problems with repos.
+Additional repos may be needed in order to install anything. </p>
+<p> The solution used in this project required us to host the iso dvd on a web server, have packer grab the iso during the provisioning stage, and copy the repo from the dvd locally. </p>
+
+<br>
+<p><b> - RHEL 6 large - </b></p>
+<p> The large RHEL 6 build requires the gui to be installed inside the kickstart file, not the provisioning section of packer like the other operatung systems</p>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="footer">
+<p> Click <a href=Step-4.html>here</a> for Step 4 - Opening Images with Vagrant</p>
+<p> for more info check out packers website <a href=https://www.packer.io/> here </a></p>
+</p>To go home click <a href=../index.html> home </a></p>
+
+</div>
+</body>
+</html>

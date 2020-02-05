@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>Step-4 Open Images with Vagrant</title>
+<style>
+div{
+	border: 5px solid black;
+	margen-right:15000px;
+}
+</style>
+</head>
+<body bgcolor="d3d3d3">
+
+
+<h1>&emsp;Opening Boxes with Vagrant</h1>
+<p>&emsp;Vagrant works by reading a Vagrantfile to open and provision a pre-packaged virtual machine.</p>
+<p>&emsp;To generate a simple vagrant file, issue the command: </p>
+<pre>	Vagrant init </pre>
+<p>&emsp;This simple file can be used to create custom vagrant recipes by modifying the the file.</p>
+<br>
+
+<div>
+<br>
+<p>&emsp;The Vagrant files in this project only have 3 sections: </p>
+<pre>	- Variables (optional)
+	- Provisioning (optional)
+	- Configurations
+</pre>
+<br>
+<h3>&emsp;Variables: </h3>
+<p>&emsp;A Variable section is good practice because it provides easy customization. It is a good idea to set variables for things like path, vm name, virtual hardware specifications, etc</p>
+<p>&emsp;See an example below:</p> 
+ &emsp;<img src=../pictures/configure_vagrant/var-vagrant.png style="width:700;">
+
+<br>
+<h3>&emsp;Configurations: </h3>
+<p>&emsp; This is the only truly necessary section of a Vagrantfile. In this section options can be provided to supply environmental variables, virtual machine resources, and login information.</p>
+<p>&emsp; See an example below: </p>
+ &emsp;<img src=../pictures/configure_vagrant/config-vagrant.png style="width:700;">
+
+<br>
+<h3>&emsp;Provisioning</h3>
+<p>&emsp;This section provides the ability to supply vagrant with shell commands to execute on the virtual machine.</p>
+<p>&emsp;See an example below: </p>
+ &emsp;<img src=../pictures/configure_vagrant/prov-vagrant.png style="width:700;">
+
+<br>
+<p><b>&emsp;NOTE:</b> By default Vagrant will try to configure shared storage between the host and the VM. However most of the time this process will fail and halt the provisioning process.
+to work around this shared storage can be disabled.</p> 
+<p>&emsp; To disable shared storage, Include the following in the configuration section:</p>
+<pre> 
+	config.vm.synced_folder/vagrant, disabled: true
+</pre>
+</div>
+
+<br>
+<p>Using Vagrant</b></p>
+<p>Once a vagrant file is created/downloaded, it can be ran using the following command: </p>
+<pre>
+	vagrant up
+</pre>
+<p>Vagrant will then: </p>
+<pre>
+	- Open the box
+	- name the vm
+	- provision the vm with hardware specifications and environmental variables
+	- SSH into the virtual machine
+	- Provision the virtual machine with inline shell commands 
+</pre>
+
+<br>
+<p><b>Useful Commands</b></p>
+<p>There are many useful vagrant commands that can be ran after the vagrant box has been created. Some examples are: </p>
+<pre>
+	- Vagrant halt -- shutdown the VM
+	- Vagrant provision -- forces the provisioning inside the Vagrantfile to run again (useful if it failed the first time) 
+	- Vagrant ssh -- into the VM
+	- Vagrant destroy -- completely removes the VM and all of its resources
+	- Vagrant -h -- display a complete list of commands
+</pre>
+<br>
+<div>
+<h2>&emsp;Troubleshooting</h2>
+<p>&emsp; There are several things that can go wrong when building Vagrantfiles or using vagrant in general.</p>
+<p>&emsp; A one of the issues I encountered was:</p>
+
+<br>
+<p><b>&emsp;Vagrant boxes do not reflect provisioning performed by packer. </b></p>
+<p>&emsp;&emsp;This happens because vagrant can cache a virtual machine and retain some settings (even after running vagrant destroy</p>
+<p>&emsp;&emsp;SOLUTION -  to fix this problem delete the box from ~/.vagrant.d/boxes/ and remove any locks in the ~/.vagrant.d/data folder.</p>
+
+<br>
+<p>&emsp;For a <b>more extensive list of issues</b> with vagrant check out: <a href="https://www.vagrantup.com/docs/other/debugging.html">https://www.vagrantup.com/docs/other/debugging.html</a></p>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<div class="footer">
+<p> Click <a href=Step-5.html>here</a> for Step 5 - Configure the Web Server</p>
+<p> for more info check out Vagrants website <a href=https://www.vagrantup.com> here </a></p>
+</p>To go home click <a href=../index.html> home </a></p>
+</div>
+
+</body>
+</html>

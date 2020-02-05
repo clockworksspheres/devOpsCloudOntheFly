@@ -1,0 +1,101 @@
+<html>
+<head>
+<title>Notes</title>
+<style>
+div{
+        border: 5px solid black;
+        margen-right:15000px;
+}
+</style>
+</head>
+
+<body bgcolor="d3d3d3">
+<div>
+<h1>General Notes</h1>
+<p>
+Here is a link to the repo where all the code lives: 
+<a href="https://git.lanl.gov/ahitchcock/infrastructure-as-code">https://git.lanl.gov/ahitchcock/infrastructure-as-code </a>
+<br>
+<br>
+It is a good idea to start with some of the easier operating systems when setting up this servce.
+<br>
+The order I foud easiest was: 
+</p>
+<pre>	- ubuntu 
+	- CentOS
+	- Debian 
+	- Fedora 
+	- openSUSE
+	- RHEL
+</pre>
+<p> I suggest doing operating systems you are familiar with first </p>
+<p> DONT try to run qemu and virtualbox at the same time. Virtualbox will enter "guru mode". If this happens the machine will need to be removed somehow. </p>
+
+
+<h4> VirtualBox </h4>
+<p> aside from guru mode mentioned above, there are several cache/log files that can cause problems. 
+If experencing problems, it can be helpful to remove files found at: 
+<pre>
+	/home/usr/VirtualBox VMs
+	/etc/vbox
+	/hone/usr/.config/Virtualbox/virtualbox.xml
+</pre> 
+
+<h4> vagrant </h4>
+<p> vagrant can also benefit from having the cache removed. These problem files can be found at: 
+<pre>
+	/home/usr/.vagrant.d/boxes 
+	/home/usr/.vagrant.d/data/*.lock 
+	./.vagrant ----------------------- (this is in the directory the vagrant box is running in)
+</pre>
+There is a sctipt to clean out those files and remove all virtual machines in the cron-scripts directory in the gitlab. BE CAREFUL with the script. It is designed to kill all vms.
+<br>
+Vagrant has a bit of code that applies a random 3 character string to the end of each VM name. This is applies as a workaround to a problem with vagrant or virtualbox itself. For some reason a registered vm name will remain for a while after the vm is removed. I cannot find where these resistered names are being stored, so the randomizer enrures that a vm will not get the same name two times in a row. 
+</p>
+
+</div>
+
+<br>
+<div>
+<p> 
+NOTE: QEMU support is being worked into the design of these packer builds. To run the packer QEMU builder enter the command: 
+<pre> 	packer build -only=qemu (name_of_.json_file) </pre>
+<br> 
+<h4> Ubuntu 18.04 server builds: </h4>
+
+When building with QEMU the preseed file may fail during disk partitioning. This is because the virtualbox partition manager works from /dev/Sda, but QEMU requires /dev/Vda (with a "V" instead of an "S"). To supposrt both virtualbox and QEMU, each needs its own preseed file with the respective partition/drive selected.
+<br>
+<br>
+also, the qemu built with packer has a networking problem. Packer builds the guest with interface ens3, but vagrant brings up the machine with interfaces "ens5" and "ens6". This means that when trying to bting up the ubuntu image it will not get an IP address or any connectivity. 
+<br>
+- AS A WORKAROUND - you can manually change the file /etc/netplan/some_file.yaml to reflect whatever interfaces are actually present. 
+</p> 
+<br>
+<p>
+<h4> RHEL </h4>
+<p>There can be some problems with the repo for RHEL which can cause the build to fail. The way it is currently set up a script is used to grab the iso and mount it locally, then copy the repo from the iso file to a local folder. If the path to the iso is wrong in the add_repo script then the build will fail. Currently the iso files are hosted on a "hidden" page that can be found at: "http://rntest.lanl.gov/iso_downloads/hidden.html".
+</p>
+<br>
+<h5> RHEL 6 </h5>
+<p>
+RHEL 6 has some network issues. When building with QEMU, the same issue is present here as is in Ubuntu (above)
+<br>
+- AS A WORKAROUND - you can manually enable the networking for RHEL 6 by: 
+<pre>	- entering "ifconfig -a" and taking note of the interface name and hardware address. 
+	- copying the netconfig for eth0 (found in /etc/sysconfig/network-scripts/ifcfg-eth0)
+	- editing the copy with the information from the first step (name and harware address)
+	- rebooting the machine. 
+</pre>
+<br>
+</div> 
+
+
+
+
+<br>
+<div class="footer">
+</p>To go home click <a href=../index.html> home </a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<html>
+<head>
+<title>Step-5 Configure Web Server</title>
+<style>
+div{ 
+	border: 5px solid black;
+	margen-right:15000px;
+}
+</style>
+</head>
+<body bgcolor="d3d3d3">
+
+<h1>Step-5 Configuring the Web Server</h1>
+
+<p>This guide will provide instruction on how to build an online repository where the vagrant
+boxes can be hosted and easily downloaded. This is NOT an in depth apache or
+http guide, but it will provide enough instruction to get a web server up and
+running with a few pages and downloadable content.</p>
+
+<div>
+<h2>&emsp; Starting Apache</h2>
+<p>&emsp; After apache is installed, we will want to make sure that it can be started. To check the
+status of the apache service, enter the command:
+<pre>
+	sudo systemctl status httpd
+</pre>
+<p>&emsp; To start the apache service:</p>
+<pre>
+	systemctl start 
+</pre>
+<p>&emsp; And then check the status again to make sure it is running</p>
+<p>&emsp; Apache can be stopped with:</p>
+<pre>
+	systemctl stop httpd
+</pre>
+<p>&emsp;Then check the status again to be sure it stopped </p>
+<br>
+</div>
+
+<h2>Writing the web pages</h2>
+<p>While apache is running it will look in the doccument root for html files. </p>
+<p> the typical web root is 
+<pre>
+	/var/www/html
+</pre>
+<br>
+<p>For this project there only a few web pages running on apache. We have:</p>
+<pre>
+	- an index (the home page)
+	- a downloads page
+	- Documentation pages.
+</pre>
+
+<br>
+<h3>Index</h3>
+<p> the index acts as a home page for the service. It contains a brief description of the project and links to other pages. </p>
+
+<br>
+<h3> Downloads </h3>
+<p> this is where links to the downloadable files will go. In this project there are links to boxes, Vagrantfiles, and iso files. It is important to have the link pointing to the actual path of the file you are linking, and that file needs to have adequate permissions in order to be downloaded </p>
+<p> A simple way to ensure files are in directories with correct permissions is to house them in sub-folders within the doccument root. </p>
+<p>For this project there are sub-folders for:
+<pre>
+	- boxes 
+	- iso_downloads
+	- maintenance_docs
+	- pictures
+	- Vagrant recipies  
+</pre>
+
+<br>
+<h3> Documentation </h3>
+<p> These pages (packer and vagrant on the home page) are general "how to use" pages. </p>
+<p> They contain info about how to install and use the tools, as well as useful screenshots. </p>
+
+<br>
+<div>
+<h2>&emsp;For help</h2>
+
+<p>&emsp;For an Apache troubleshooting guide see:  <a href="https://www.linode.com/docs/troubleshooting/troubleshooting-common-apache-issues/">https://www.linode.com/docs/troubleshooting/troubleshooting-common-apache-issues/</a></p>
+
+<p>&emsp;For a simple html troubleshooting guide see: <a href="https://en.support.wordpress.com/html-troubleshooting/">https://en.support.wordpress.com/html-troubleshooting/</a></p>
+</div>
+
+<br>
+<div class="footer">
+<p>&emsp; Click <a href=Notes.html>here</a> for general notes/helpful information about the service</p>
+<p>&emsp; for more info check out Vagrants website <a href=https://www.vagrantup.com> here </a></p>
+<p>&emsp;To go home click <a href=../index.html> home </a></p>
+</div>
+
+</body>
+</html>
